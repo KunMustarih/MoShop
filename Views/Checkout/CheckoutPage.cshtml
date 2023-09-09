@@ -1,0 +1,49 @@
+﻿@model List<ShoppingCartItem>
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="container">
+    <h2>Checkout</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Size</th>
+                <th>Price</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ShirtID</td>
+                    <td>@item.Size</td>
+                    <td>$@item.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="/Home" class="btn btn-primary">Continue Shopping</a>
+        </div>
+        <div class="col-md-6 text-end">
+            <p><strong>Total: $@(Model.Sum(item => Int32.Parse(item.Price)))</strong></p>
+            
+                @foreach(var shirt in Model)
+                {
+                <form method="post" asp-action="Confirmation">
+                    <input type="hidden" name="productId" value="@shirt.ShirtID" />
+                    <input type="hidden" name="size" value="@shirt.Size" />
+                    <input type="hidden" name="price" value="@shirt.Price" />
+                    <button type="submit" class="btn btn-primary">Proceed to Purhcase</button>
+                </form>
+                }
+                
+            @* <a asp-action="Confirmation" class="btn btn-success">Proceed to Purchase</a> *@
+        </div>
+    </div>
+</div>

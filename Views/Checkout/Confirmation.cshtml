@@ -1,0 +1,36 @@
+﻿@model List<ShoppingCartItem>
+
+@{
+    ViewData["Title"] = "Confirmation Page";
+}
+
+<div class="container">
+    <h1>Confirmation of Purchase</h1>
+    <hr />
+
+    <h3>Order Details:</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Size</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ShirtID</td>
+                    <td>@item.Size</td>
+                    <td>@item.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table
+    
+    <h2 class="fs-4">Thank you for your purhcase your item will arrive soon</h2>
+
+    <!-- Additional confirmation information or buttons can be added here -->
+</div>

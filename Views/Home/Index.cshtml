@@ -1,0 +1,106 @@
+﻿@model List<ShoppingCartItem>
+
+@{
+    ViewData["Title"] = "Home";
+    ViewData["PageActionUrl"] = "/Home/Index.cshtml";
+}
+
+
+<!-- ... Your existing HTML ... -->
+
+<div class="container" id="shirts-container">
+    <div class="row">
+        <!-- Loop for each shirt -->
+        @foreach (var shirt in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card item-card" id="@shirt.ShirtID" data-size="@shirt.Size">
+                    <!-- Shirt Image -->
+                    <img src="@Url.Content("~/" + shirt.ShirtID + ".jpg")" class="card-img-top" alt="Shirt Image">
+                    <div class="card-body">
+                        <!-- Shirt Name -->
+                        <h5 class="card-title">@shirt.ShirtID</h5>
+                        <!-- Shirt Size -->
+                        <p class="card-text">Size: @shirt.Size</p>
+                        <!-- Shirt Price -->
+                        <p class="card-text">Price: $@shirt.Price</p>
+                        <!-- Add to Cart button -->
+                        <form method="post" asp-controller="Checkout" asp-action="CheckoutPage">
+                            <input type="hidden" name="productId" value="@shirt.ShirtID" />
+                            <input type="hidden" name="size" value="@shirt.Size" />
+                            <input type="hidden" name="price" value="@shirt.Price" />
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+    <script>
+        // Get all the size checkboxes
+        var sizeCheckboxes = document.querySelectorAll('.size-check-input');
+
+        // Function to update the displayed shirts based on selected sizes
+        function updateShirtDisplay() {
+            // Get all selected sizes
+            var selectedSizes = [];
+            sizeCheckboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    selectedSizes.push(checkbox.value);
+                }
+            });
+
+            // Get all shirt cards
+            var shirts = document.querySelectorAll('.item-card');
+
+            // Initially hide all shirt cards
+            shirts.forEach(function (shirt) {
+                shirt.style.display = 'none';
+            });
+
+            // Show shirts that match selected sizes
+            if (selectedSizes.length === 0) {
+                // If no sizes are selected, show all shirts
+                shirts.forEach(function (shirt) {
+                    shirt.style.display = 'block';
+                });
+            } else {
+                // Show shirts matching selected sizes
+                selectedSizes.forEach(function (size) {
+                    var matchingShirts = document.querySelectorAll('.item-card[data-size="' + size + '"]');
+                    matchingShirts.forEach(function (shirt) {
+                        shirt.style.display = 'block';
+                    });
+                });
+            }
+
+         
+        }
+
+        // Add event listeners to the size checkboxes
+        sizeCheckboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', updateShirtDisplay);
+        });
+
+        // Initially update shirt display
+        updateShirtDisplay();
+
+        var shoppingCart = {
+            items: [],
+            addItem: function (item) {
+                this.items.push(item);
+            },
+            removeItem: function (index) {
+                this.items.splice(index, 1);
+            },
+            calculateTotal: function () {
+                // Implement your logic to calculate the total price
+            }
+        };
+
+    </script>
+
